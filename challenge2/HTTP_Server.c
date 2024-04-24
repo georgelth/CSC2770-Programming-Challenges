@@ -32,7 +32,7 @@ snprintf(response, sizeof(response),
 "Method: %s\n"
 "URL: %s\n"
 "Protocol: %s\n\n"
-"Hello, world", method, url, protocol);
+"Hello, world\n\n", method, url, protocol);
 
 write(sock, response, strlen(response));
 printf("Response sent\n");

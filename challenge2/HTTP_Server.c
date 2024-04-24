@@ -7,14 +7,39 @@
 
 #define PORT 8080
 
+#define BUFFER_SIZE 1024
+#define METHOD_SIZE 16
+#define URL_SIZE 1024
+#define PROTOCOL_SIZE 16
+
 void *connection_handler(void *socket_desc) {
-    int sock = *(int*)socket_desc;
-    char *hello = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 12\n\nHello, world!";
-    write(sock, hello, strlen(hello));
-    printf("Response sent\n");
-    close(sock);
-    free(socket_desc);
-    return NULL;
+char buffer[BUFFER_SIZE];
+char method[METHOD_SIZE];
+char url[URL_SIZE];
+char protocol[PROTOCOL_SIZE];
+
+int sock = *(int*)socket_desc;
+char *hello = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 12\n\nHello, world!";
+sscanf(buffer, "%s %s %s", method, url, protocol);
+
+char response[BUFFER_SIZE];
+//snprintf(response, sizeof(response), "Hello!\nMethod: %s\nURL: %s\nProtocol: %s\n\n", metho>
+
+snprintf(response, sizeof(response),
+"HTTP/1.1 200 OK\n"
+"Content-Type: text/html\n"
+"Content-Length: 12\n"
+"Method: %s\n"
+"URL: %s\n"
+"Protocol: %s\n\n"
+"Hello, world", method, url, protocol);
+
+write(sock, response, strlen(response));
+printf("Response sent\n");
+close(sock);
+free(socket_desc);
+
+return NULL;
 }
 
 int main() {
